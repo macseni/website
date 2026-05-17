@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="cy">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ffeil Fflachgardiau Economeg AS</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Fraunces:opsz,wght@9..144,600;700&display=swap');
+
+    :root{
+      --bg:#f5efe6;
+      --paper:#fffaf3;
+      --ink:#1f1a17;
+      --muted:#6b625a;
+      --accent:#b45a2a;
+      --accent-2:#21554e;
+      --line:rgba(31,26,23,.12);
+      --shadow:0 20px 60px rgba(44, 28, 14, .12);
+      --radius:24px;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:'Space Grotesk', sans-serif;
+      color:var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(180,90,42,.10), transparent 28%),
+        radial-gradient(circle at bottom right, rgba(33,85,78,.10), transparent 28%),
+        linear-gradient(180deg, #f8f2ea 0%, #f3ede4 100%);
+      min-height:100vh;
+    }
+
+    .grain::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      opacity:.06;
+      background-image:
+        linear-gradient(transparent 0 49%, rgba(0,0,0,.2) 50% 51%, transparent 52%),
+        linear-gradient(90deg, transparent 0 49%, rgba(0,0,0,.15) 50% 51%, transparent 52%);
+      background-size: 3px 3px, 4px 4px;
+      mix-blend-mode:multiply;
+    }
+
+    .wrap{
+      width:min(1120px, calc(100% - 2rem));
+      margin-inline:auto;
+    }
+
+    header{
+      padding:clamp(2rem, 5vw, 4rem) 0 1.2rem;
+    }
+
+    .hero{
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap:1.5rem;
+      align-items:end;
+    }
+
+    .eyebrow{
+      display:inline-flex;
+      gap:.5rem;
+      align-items:center;
+      font-size:.85rem;
+      text-transform:uppercase;
+      letter-spacing:.16em;
+      color:var(--accent-2);
+      margin-bottom:1rem;
+    }
+
+    .dot{
+      width:.6rem;
+      height:.6rem;
+      border-radius:50%;
+      background:var(--accent);
+      box-shadow:0 0 0 6px rgba(180,90,42,.12);
+    }
+
+    h1{
+      font-family:'Fraunces', serif;
+      font-size:clamp(2.5rem, 7vw, 5.5rem);
+      line-height:.94;
+      margin:0;
+      letter-spacing:-.04em;
+      max-width:12ch;
+    }
+
+    .lead{
+      color:var(--muted);
+      font-size:clamp(1rem, 2vw, 1.1rem);
+      max-width:56ch;
+      margin-top:1rem;
+    }
+
+    .panel{
+      background:rgba(255,250,243,.72);
+      border:1px solid rgba(255,255,255,.6);
+      backdrop-filter:blur(12px);
+      box-shadow:var(--shadow);
+      border-radius:var(--radius);
+      padding:1.2rem;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .panel::after{
+      content:"";
+      position:absolute;
+      inset:auto -20% -35% auto;
+      width:220px;
+      height:220px;
+      border-radius:50%;
+      background:radial-gradient(circle, rgba(180,90,42,.18), transparent 62%);
+      pointer-events:none;
+    }
+
+    .meta{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:.8rem;
+    }
+
+    .meta .item{
+      padding:1rem;
+      border:1px solid var(--line);
+      border-radius:18px;
+      background:rgba(255,255,255,.46);
+    }
+
+    .meta .k{
+      font-size:.78rem;
+      text-transform:uppercase;
+      letter-spacing:.12em;
+      color:var(--muted);
+      margin-bottom:.35rem;
+    }
+
+    .meta .v{
+      font-weight:700;
+      font-size:1rem;
+    }
+
+    .toolbar{
+      display:flex;
+      flex-wrap:wrap;
+      gap:.8rem;
+      justify-content:space-between;
+      align-items:center;
+      margin:1.5rem 0 1rem;
+      padding:1rem 1.1rem;
+      border-top:1px solid var(--line);
+      border-bottom:1px solid var(--line);
+    }
+
+    .toolbar-left{
+      display:flex;
+      flex-wrap:wrap;
+      gap:.6rem;
+      align-items:center;
+    }
+
+    .badge{
+      padding:.55rem .8rem;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.55);
+      font-size:.9rem;
+    }
+
+    .actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:.6rem;
+    }
+
+    button{
+      appearance:none;
+      border:none;
+      cursor:pointer;
+      font:inherit;
+      border-radius:999px;
+      padding:.9rem 1.1rem;
+      transition:transform .18s ease, box-shadow .18s ease, background .18s ease, color .18s ease;
+    }
+
+    .btn-primary{
+      background:var(--ink);
+      color:#fff;
+      box-shadow:0 10px 24px rgba(31,26,23,.16);
+    }
+
+    .btn-secondary{
+      background:transparent;
+      color:var(--ink);
+      border:1px solid var(--line);
+    }
+
+    button:hover{
+      transform:translateY(-2px) scale(1.01);
+    }
+
+    button:active{
+      transform:translateY(0) scale(.99);
+    }
+
+    main{
+      padding-bottom:3rem;
+    }
+
+    .cards{
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0,1fr));
+      gap:1rem;
+    }
+
+    .flashcard{
+      min-height:260px;
+      perspective:1200px;
+      opacity:0;
+      transform:translateY(18px);
+      animation:reveal .7s ease forwards;
+    }
+
+    .flashcard:nth-child(2n){animation-delay:.08s}
+    .flashcard:nth-child(3n){animation-delay:.14s}
+    .flashcard:nth-child(4n){animation-delay:.2s}
+
+    .flashcard-inner{
+      position:relative;
+      width:100%;
+      min-height:260px;
+      transform-style:preserve-3d;
+      transition:transform .8s cubic-bezier(.2,.8,.2,1);
+    }
+
+    .flashcard.flipped .flashcard-inner{
+      transform:rotateY(180deg);
+    }
+
+    .face{
+      position:absolute;
+      inset:0;
+      backface-visibility:hidden;
+      border-radius:var(--radius);
+      overflow:hidden;
+      background:linear-gradient(180deg, rgba(255,255,255,.76), rgba(255,250,243,.96));
+      border:1px solid rgba(255,255,255,.7);
+      box-shadow:var(--shadow);
+      padding:1.2rem;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+    }
+
+    .face.back{
+      transform:rotateY(180deg);
+      background:linear-gradient(180deg, rgba(33,85,78,.96), rgba(24,61,56,.98));
+      color:#f5f3ef;
+    }
+
+    .index{
+      font-size:.8rem;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      color:var(--muted);
+    }
+
+    .back .index{
+      color:rgba(245,243,239,.72);
+    }
+
+    .question, .answer{
+      font-size:clamp(1.15rem, 2.2vw, 1.5rem);
+      line-height:1.2;
+      font-weight:700;
+      max-width:24ch;
+    }
+
+    .answer{
+      font-weight:500;
+      max-width:40ch;
+      font-size:clamp(1rem, 1.8vw, 1.15rem);
+      line-height:1.45;
+    }
+
+    .hint{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:1rem;
+      color:var(--muted);
+      font-size:.92rem;
+    }
+
+    .back .hint{
+      color:rgba(245,243,239,.78);
+    }
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:.45rem;
+      padding:.45rem .7rem;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.5);
+      font-size:.82rem;
+    }
+
+    .back .pill{
+      background:rgba(255,255,255,.08);
+      border-color:rgba(255,255,255,.14);
+      color:#f5f3ef;
+    }
+
+    .footer-note{
+      margin-top:1.25rem;
+      color:var(--muted);
+      font-size:.92rem;
+    }
+
+    @keyframes reveal{
+      to{
+        opacity:1;
+        transform:translateY(0);
+      }
+    }
+
+    .fade-in{
+      opacity:0;
+      transform:translateY(18px);
+      transition:opacity .7s ease, transform .7s ease;
+    }
+
+    .fade-in.visible{
+      opacity:1;
+      transform:translateY(0);
+    }
+
+    @media (max-width: 860px){
+      .hero{
+        grid-template-columns:1fr;
+      }
+      .cards{
+        grid-template-columns:1fr;
+      }
+    }
+
+    @media print{
+      body{
+        background:#fff;
+      }
+      .grain::before,
+      .actions,
+      .footer-note{
+        display:none !important;
+      }
+      .panel, .face{
+        box-shadow:none;
+        backdrop-filter:none;
+      }
+      .cards{
+        grid-template-columns:1fr 1fr;
+      }
+      .flashcard, .flashcard-inner, .face{
+        break-inside:avoid;
+        min-height:220px;
+      }
+      .flashcard .flashcard-inner{
+        transform:none !important;
+      }
+      .flashcard .back{
+        display:none;
+      }
+    }
+  </style>
+</head>
+<body class="grain">
+  <div class="wrap">
+    <header class="fade-in">
+      <div class="hero">
+        <div>
+          <div class="eyebrow"><span class="dot"></span> Ffeil adolygu</div>
+          <h1>Fflachgardiau Economeg AS</h1>
+          <p class="lead">
+            Ffeil syml a defnyddiol ar gyfer adolygu pynciau micro a macro. Clicia ar unrhyw gerdyn i’w droi. Gelli di hefyd argraffu’r dudalen neu lawrlwytho’r testun.
+          </p>
+        </div>
+        <aside class="panel fade-in" aria-label="Manylion y ffeil">
+          <div class="meta">
+            <div class="item">
+              <div class="k">Iaith</div>
+              <div class="v">Cymraeg</div>
+            </div>
+            <div class="item">
+              <div class="k">Pwnc</div>
+              <div class="v">Economeg AS</div>
+            </div>
+            <div class="item">
+              <div class="k">Math</div>
+              <div class="v">Fflachgardiau</div>
+            </div>
+            <div class="item">
+              <div class="k">Nifer</div>
+              <div class="v">17 cerdyn</div>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <div class="toolbar fade-in">
+        <div class="toolbar-left">
+          <span class="badge">Clic ar gerdyn i weld yr ateb</span>
+          <span class="badge">Defnyddiol ar gyfer adolygu cyflym</span>
+        </div>
+        <div class="actions">
+          <button class="btn-primary" onclick="window.print()">Argraffu / Cadw fel PDF</button>
+          <button class="btn-secondary" onclick="downloadTxt()">Lawrlwytho fel .txt</button>
+          <button class="btn-secondary" onclick="flipAll()">Troi pob cerdyn</button>
+          <button class="btn-secondary" onclick="resetCards()">Ailosod</button>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="cards" id="cards" aria-label="Fflachgardiau economeg">
+        <article class="flashcard" tabindex="0" aria-label="Fflachgerdyn 1">
+          <div class="flashcard-inner">
+            <div class="face front">
+              <div class="index">Cerdyn 01</div>
+              <div class="question">Beth yw “Uchafu elw / Y gromlin cyflenwad”?</div>
+              <div class="hint">
+                <span class="pill">Micro</span>
+                <span>Clic i droi</span>
+              </div>
+            </div>
+            <div class="face back">
+              <div class="index">Ateb</div>
+              <div class="answer">Y pwynt lle mae cwmni yn cynhyrchu ar lefel sy’n creu’r gwahaniaeth mwyaf rhwng cyfanswm incwm a chyfanswm costau, fel arfer lle mae MC = MR. Mae’r gromlin gyflenwad yn dangos faint mae cynhyrchwyr yn fodlon ei gynnig ar bob pris.</div>
+              <div class="hint">
+                <span class="pill">Enghraifft: cwmni yn cynyddu allbwn pan fo pris yn codi</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="flashcard" tabindex="0" aria-label="Fflachgerdyn 2">
+          <div class="flashcard-inner">
+            <div class="face front">
+              <div class="index">Cerdyn 02</div>
+              <div class="question">Beth yw “Defnydd-deb ffiniol / Y gromlin galw”?</div>
+              <div class="hint">
+                <span class="pill">Micro</span>
+                <span>Clic i droi</span>
+              </div>
+            </div>
+            <div class="face back">
+              <div class="index">Ateb</div>
+              <div class="answer">Defnydd-deb ffiniol yw’r boddhad ychwanegol o ddefnyddio un uned ychwanegol o nwydd. Mae’r gromlin galw yn goleddu i lawr oherwydd bod defnyddwyr fel arfer yn fodlon talu llai am unedau ychwanegol.</div>
+              <div class="hint">
+                <span class="pill">Enghraifft: mae’r darn cyntaf o bitsa yn rhoi mwy o foddhad na’r pumed</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="flashcard" tabindex="0" aria-label="Fflachgerdyn 3">
+          <div class="flashcard-inner">
+            <div class="face front">
+              <div class="index">Cerdyn 03</div>
+              <div class="question">Sut mae siap y cromliniau galw a chyflenwad yn cael ei ddisgrifio?</div>
+              <div class="hint">
+                <span class="pill">Micro</span>
+                <span>Clic i droi</span>
+              </div>
+            </div>
+            <div class="face back">
+              <div class="index">Ateb</div>
+              <div class="answer">Mae’r gromlin galw yn goleddu i lawr oherwydd perthynas wrthdro rhwng pris a maint y galw. Mae’r gromlin gyflenwad yn goleddu i fyny oherwydd perthynas uniongyrchol rhwng pris a maint y cyflenwad.</div>
+              <div class="hint">
+                <span class="pill">Galw: pris i lawr, maint i fyny</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="flashcard" tabindex="0" aria-label="Fflachgerdyn 4">
+          <div class="flashcard-inner">
+            <div class="face front">
+              <div class="index">Cerdyn 04</div>
+              <div class="question">Beth yw diagram marchnad?</div>
+              <div class="hint">
+                <span class="pill">Micro</span>
+                <span>Clic i droi</span>
+              </div>
+            </div>
+            <div class="face back">
+              <div class="index">Ateb</div>
+              <div class="answer">Graff sy’n dangos croestoriad y gromlin galw a’r gromlin gyflenwad. Fe’i defnyddir i ddangos pris a maint cydbwysedd ac i ddadansoddi newidiadau yn y farchnad.</div>
+              <div class="hint">
+                <span class="pill">D = galw, S = cyflenwad</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="flashcard" tabindex="0" aria-label="Fflachgerdyn 5">
+          <div class="flashcard-inner">
+            <div class="face front">
+              <div class="index">Cerdyn 05</div>
+              <div class="question">Sut mae pennu pris ar ddiagram?</div>
+              <div class="hint">
+                <span class="pill">Micro</span>
+                <span>Clic i droi</span>
+              </div>
+            </div>
+            <div class="face back">
+              <div class="index">Ateb</div>
+              <div class="answer">Pris cydbwysedd yw’r pris lle mae galw yn hafal i gyflenwad. Ar y diagram, dyma’r pwynt lle mae’r cromliniau D ac S yn croesi ei gilydd.</div>
+              <div class="hint">
+                <span class="pill">Os yw pris yn rhy uchel: gormodedd. Rhy isel: prinder</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="flashcard" tabindex="0" aria-label="Fflachgerdyn 6">
+          <div class="flashcard-inner">
+            <div class="face front">
+              <div class="index">Cerdyn 06</div>
+              <div class="question">Beth yw gwarged cynhyrchwyr?</div>
+              <div class="hint">
+                <span class="pill">Micro</span>
+                <span>Clic i droi</span>
+              </div>
+            </div>
+            <div class="face back">
+              <div class="index">Ateb</div>
+              <div class="answer">Gwahaniaeth rhwng y pris mae cynhyrchydd yn fodlon derbyn a’r pris gwirioneddol y mae’n ei gael. Ar ddiagram, dyma’r ardal uwchben y gromlin gyflenwad ond o dan y pris marchnad.</div>
+              <div class="hint">
+                <span class="pill">Enghraifft: ffermwr yn cael pris uwch na’r isafswm yr oedd yn fodlon ei dderbyn</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="flashcard" tabindex="0" aria-label="Fflachgerdyn 7">
+          <div class="flashcard-inner">
+            <div class="face front">
+              <div class="index">Cerdyn 07</div>
+              <div class="question">Diffiniwch Elastigedd Pris Galw (PED).</div>
+              <div class="hint">
+                <span class="pill">Micro</span>
+                <span>Clic i droi</span>
+              </div>
+            </div>
+            <div class="face back">
+              <div class="index">Ateb</div>
+              <div class="answer">Mesur yw PED o faint mae galw yn ymateb i newid mewn pris. Fformiwla: % newid mewn maint y galw ÷ % newid mewn pris. Os yw’n fwy nag 1, mae galw’n elastig; llai nag 1, yn anelastig.</div>
+              <div class="hint">
+                <span class="pill">Petrol = yn aml yn anelastig</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="flashcard" tabindex="0" aria-label="Fflachgerdyn 8">
+          <div class="flashcard-inner">
+            <div class="face front">
+              <div class="index">Cerdyn 08</div>
+              <div class="question">Beth yw Elastigedd Incwm Galw (YED)?</div>
+              <div class="hint">
+                <span class="pill">Micro</span>
+                <span>Clic i droi</span>
+              </div>
+            </div>
+            <div class="face back">
+              <div class="index">Ateb</div>
+              <div class="answer">Mesur yw YED o faint mae galw yn newid pan fo incwm yn newid. YED positif = nwydd normal. YED negatif = nwydd israddol.</div>
+              <div class="hint">
+                <span class="pill">Enghraifft: bwyd moethus = nwydd normal</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="flashcard" tabindex="0" aria-label="Fflachgerdyn 9">
+          <div class="flashcard-inner">
+            <div class="face front">
+              <div class="index">Cerdyn 09</div>
+              <div class="question">Beth yw Croeselastigedd (XED)?</div>
+              <div class="hint">
+                <span class="pill">Micro</span>
+                <span>Clic i droi</span>
+              </div>
+            </div>
+            <div class="face back">
+              <div class="index">Ateb</div>
+              <div class="answer">Mae XED yn mesur sut mae galw am un nwydd yn newid pan fo pris nwydd arall yn newid. Positif = amnewidion. Negatif = cyflenwolion.</div>
+              <div class="hint">
+                <span class="pill">Te a choffi = amnewidion</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="flashcard" tabindex="0" aria-label="Fflachgerdyn 10">
+          <div class="flashcard-inner">
+            <div class="face front">
+              <div class="index">Cerdyn 10</div>
+              <div class="question">Diffiniwch Elastigedd Pris Cyflenwad (PES).</div>
+              <div class="hint">
+                <span class="pill">Micro</span>
+                <span>Clic i droi</span>
+              </div>
+            </div>
+            <div class="face back">
+              <div class="index">Ateb</div>
+              <div class="answer">Mesur yw PES o faint mae cyflenwad yn ymateb i newid mewn pris. Mae amser, stociau, a gallu cynhyrchu yn dylanwadu ar ba mor elastig yw cyflenwad.</div>
+              <div class="hint">
+                <span class="pill">Mwy o amser = cyflenwad fel arfer yn fwy elastig</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="flashcard" tabindex="0" aria-label="Fflachgerdyn 11">
+          <div class="flashcard-inner">
+            <div class="face front">
+              <div class="index">Cerdyn 11</div>
+              <div class="question">Beth yw isafswm pris ac uchafbris?</div>
+              <div class="hint">
+                <span class="pill">Micro</span>
+                <span>Clic i droi</span>
+              </div>
+            </div>
+            <div class="face back">
+              <div class="index">Ateb</div>
+              <div class="answer">Uchafbris yw pris uchaf cyfreithiol i amddiffyn defnyddwyr. Isafswm pris yw pris isaf cyfreithiol i gefnogi cynhyrchwyr. Gall uchafbris greu prinder a gall isafswm pris greu gormodedd.</div>
+              <div class="hint">
+                <span class="pill">Enghraifft: rheoli rhenti neu isafswm cyflog</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="flashcard" tabindex="0" aria-label="Fflachgerdyn 12">
+          <div class="flashcard-inner">
+            <div class="face front">
+              <div class="index">Cerdyn 12</div>
+              <div class="question">Beth yw’r llif cylchol incwm?</div>
+              <div class="hint">
+                <span class="pill">Macro</span>
+                <span>Clic i droi</span>
+              </div>
+            </div>
+            <div class="face back">
+              <div class="index">Ateb</div>
+              <div class="answer">Model sy’n dangos llif arian rhwng aelwydydd, busnesau, y llywodraeth a’r sector tramor. Mae’n cynnwys gollyngiadau fel trethi ac arbedion, a chwistrelliadau fel buddsoddiad a gwariant llywodraeth.</div>
+              <div class="hint">
+                <span class="pill">Leakages a injections</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="flashcard" tabindex="0" aria-label="Fflachgerdyn 13">
+          <div class="flashcard-inner">
+            <div class="face front">
+              <div class="index">Cerdyn 13</div>
+              <div class="question">Sut mae siap cromliniau GC/CC yn wahanol rhwng Keynesaidd a Chlasurol?</div>
+              <div class="hint">
+                <span class="pill">Macro</span>
+                <span>Clic i droi</span>
+              </div>
+            </div>
+            <div class="face back">
+              <div class="index">Ateb</div>
+              <div class="answer">Yn y model Clasurol, mae cyflenwad agregat hirdymor yn fertigol oherwydd llawn gyflogaeth. Yn y model Keynesaidd, gall rhan o’r gromlin fod yn fwy gwastad pan fo adnoddau segur a diffyg galw yn yr economi.</div>
+              <div class="hint">
+                <span class="pill">Keynes = mwy o le i ymyrraeth y llywodraeth</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="flashcard" tabindex="0" aria-label="Fflachgerdyn 14">
+          <div class="flashcard-inner">
+            <div class="face front">
+              <div class="index">Cerdyn 14</div>
+              <div class="question">Beth yw symud GC/CC?</div>
+              <div class="hint">
+                <span class="pill">Macro</span>
+                <span>Clic i droi</span>
+              </div>
+            </div>
+            <div class="face back">
+              <div class="index">Ateb</div>
+              <div class="answer">Mae GC neu CC yn symud pan fo ffactor allanol yn newid. Er enghraifft, gall gostyngiad mewn trethi symud GC i’r dde, a gall gwelliant mewn technoleg symud CC i’r dde.</div>
+              <div class="hint">
+                <span class="pill">Symud, nid symudiad ar hyd y gromlin</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="flashcard" tabindex="0" aria-label="Fflachgerdyn 15">
+          <div class="flashcard-inner">
+            <div class="face front">
+              <div class="index">Cerdyn 15</div>
+              <div class="question">Beth yw polisi ariannol?</div>
+              <div class="hint">
+                <span class="pill">Macro</span>
+                <span>Clic i droi</span>
+              </div>
+            </div>
+            <div class="face back">
+              <div class="index">Ateb</div>
+              <div class="answer">Defnyddio cyfraddau llog a rheolaeth dros y cyflenwad arian i ddylanwadu ar alw agregat, chwyddiant a thwf economaidd. Fel arfer caiff hyn ei reoli gan y banc canolog.</div>
+              <div class="hint">
+                <span class="pill">Cyfradd llog i fyny = llai o wariant fel arfer</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="flashcard" tabindex="0" aria-label="Fflachgerdyn 16">
+          <div class="flashcard-inner">
+            <div class="face front">
+              <div class="index">Cerdyn 16</div>
+              <div class="question">Beth yw polisi ochr-gyflenwad?</div>
+              <div class="hint">
+                <span class="pill">Macro</span>
+                <span>Clic i droi</span>
+              </div>
+            </div>
+            <div class="face back">
+              <div class="index">Ateb</div>
+              <div class="answer">Polisïau sy’n ceisio cynyddu gallu cynhyrchiol yr economi a gwella effeithlonrwydd, er enghraifft addysg, hyfforddiant, buddsoddi mewn seilwaith, neu ddadreoleiddio.</div>
+              <div class="hint">
+                <span class="pill">Yn aml yn helpu twf hirdymor</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="flashcard" tabindex="0" aria-label="Fflachgerdyn 17">
+          <div class="flashcard-inner">
+            <div class="face front">
+              <div class="index">Cerdyn 17</div>
+              <div class="question">Beth yw masnach rydd a diffyniaeth?</div>
+              <div class="hint">
+                <span class="pill">Macro</span>
+                <span>Clic i droi</span>
+              </div>
+            </div>
+            <div class="face back">
+              <div class="index">Ateb</div>
+              <div class="answer">Masnach rydd yw masnachu heb rwystrau fel tariffau neu gwotâu. Diffyniaeth yw defnyddio rhwystrau i amddiffyn diwydiannau cartref rhag cystadleuaeth dramor.</div>
+              <div class="hint">
+                <span class="pill">Masnach rydd = mwy o gystadleuaeth; diffyniaeth = mwy o amddiffyniad</span>
+              </div>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <p class="footer-note fade-in">
+        Awgrym: i greu ffeil hawdd i’w hanfon, pwysa <strong>“Argraffu / Cadw fel PDF”</strong>. Os wyt ti eisiau, gallaf wedyn wneud fersiwn byrrach, fersiwn Quizlet-style, neu fersiwn gyda dim ond y cwestiynau ac atebion.
+      </p>
+    </main>
+  </div>
+
+  <script>
+    const cards = document.querySelectorAll('.flashcard');
+
+    cards.forEach(card => {
+      card.addEventListener('click', () => card.classList.toggle('flipped'));
+      card.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          card.classList.toggle('flipped');
+        }
+      });
+    });
+
+    function flipAll(){
+      const allFlipped = [...cards].every(card => card.classList.contains('flipped'));
+      cards.forEach(card => card.classList.toggle('flipped', !allFlipped));
+    }
+
+    function resetCards(){
+      cards.forEach(card => card.classList.remove('flipped'));
+      window.scrollTo({top:0, behavior:'smooth'});
+    }
+
+    function downloadTxt(){
+      const text = `Fflachgardiau Economeg AS
+
+1. Beth yw “Uchafu elw / Y gromlin cyflenwad”?
+Ateb: Y pwynt lle mae cwmni yn cynhyrchu ar lefel sy’n creu’r gwahaniaeth mwyaf rhwng cyfanswm incwm a chyfanswm costau, fel arfer lle mae MC = MR. Mae’r gromlin gyflenwad yn dangos faint mae cynhyrchwyr yn fodlon ei gynnig ar bob pris.
+
+2. Beth yw “Defnydd-deb ffiniol / Y gromlin galw”?
+Ateb: Defnydd-deb ffiniol yw’r boddhad ychwanegol o ddefnyddio un uned ychwanegol o nwydd. Mae’r gromlin galw yn goleddu i lawr oherwydd bod defnyddwyr fel arfer yn fodlon talu llai am unedau ychwanegol.
+
+3. Sut mae siap y cromliniau galw a chyflenwad yn cael ei ddisgrifio?
+Ateb: Mae’r gromlin galw yn goleddu i lawr oherwydd perthynas wrthdro rhwng pris a maint y galw. Mae’r gromlin gyflenwad yn goleddu i fyny oherwydd perthynas uniongyrchol rhwng pris a maint y cyflenwad.
+
+4. Beth yw diagram marchnad?
+Ateb: Graff sy’n dangos croestoriad y gromlin galw a’r gromlin gyflenwad. Fe’i defnyddir i ddangos pris a maint cydbwysedd ac i ddadansoddi newidiadau yn y farchnad.
+
+5. Sut mae pennu pris ar ddiagram?
+Ateb: Pris cydbwysedd yw’r pris lle mae galw yn hafal i gyflenwad. Ar y diagram, dyma’r pwynt lle mae’r cromliniau D ac S yn croesi ei gilydd.
+
+6. Beth yw gwarged cynhyrchwyr?
+Ateb: Gwahaniaeth rhwng y pris mae cynhyrchydd yn fodlon derbyn a’r pris gwirioneddol y mae’n ei gael.
+
+7. Diffiniwch Elastigedd Pris Galw (PED).
+Ateb: Mesur yw PED o faint mae galw yn ymateb i newid mewn pris. Fformiwla: % newid mewn maint y galw ÷ % newid mewn pris.
+
+8. Beth yw Elastigedd Incwm Galw (YED)?
+Ateb: Mesur yw YED o faint mae galw yn newid pan fo incwm yn newid. YED positif = nwydd normal. YED negatif = nwydd israddol.
+
+9. Beth yw Croeselastigedd (XED)?
+Ateb: Mae XED yn mesur sut mae galw am un nwydd yn newid pan fo pris nwydd arall yn newid. Positif = amnewidion. Negatif = cyflenwolion.
+
+10. Diffiniwch Elastigedd Pris Cyflenwad (PES).
+Ateb: Mesur yw PES o faint mae cyflenwad yn ymateb i newid mewn pris.
+
+11. Beth yw isafswm pris ac uchafbris?
+Ateb: Uchafbris yw pris uchaf cyfreithiol i amddiffyn defnyddwyr. Isafswm pris yw pris isaf cyfreithiol i gefnogi cynhyrchwyr.
+
+12. Beth yw’r llif cylchol incwm?
+Ateb: Model sy’n dangos llif arian rhwng aelwydydd, busnesau, y llywodraeth a’r sector tramor.
+
+13. Sut mae siap cromliniau GC/CC yn wahanol rhwng Keynesaidd a Chlasurol?
+Ateb: Yn y model Clasurol, mae cyflenwad agregat hirdymor yn fertigol oherwydd llawn gyflogaeth. Yn y model Keynesaidd, gall rhan o’r gromlin fod yn fwy gwastad pan fo adnoddau segur.
+
+14. Beth yw symud GC/CC?
+Ateb: Mae GC neu CC yn symud pan fo ffactor allanol yn newid.
+
+15. Beth yw polisi ariannol?
+Ateb: Defnyddio cyfraddau llog a rheolaeth dros y cyflenwad arian i ddylanwadu ar alw agregat, chwyddiant a thwf economaidd.
+
+16. Beth yw polisi ochr-gyflenwad?
+Ateb: Polisïau sy’n ceisio cynyddu gallu cynhyrchiol yr economi a gwella effeithlonrwydd.
+
+17. Beth yw masnach rydd a diffyniaeth?
+Ateb: Masnach rydd yw masnachu heb rwystrau. Diffyniaeth yw defnyddio rhwystrau i amddiffyn diwydiannau cartref.`;
+
+      const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'fflachgardiau-economeg-as.txt';
+      document.body.appendChild(a);
+      a.click();
+      URL.revokeObjectURL(a.href);
+      a.remove();
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting){
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
